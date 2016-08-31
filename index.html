@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>
+AngularJs $http.post() Service Response Example
+</title>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script type="text/javascript">
+var app = angular.module('postserviceApp', []);
+app.controller('postserviceCtrl', function ($scope, $http) {
+$scope.name = null;
+$scope.location = null;
+$scope.designation=null;
+$scope.lblMsg = null;
+$scope.postdata = function (name, location,designation) {
+var data = {
+name: name,
+location: location,
+designation: designation
+};
+//Call the services
+$http.post('http://localhost:3000/login', JSON.stringify(data)).then(function (response) {
+if (response.data)
+$scope.msg = "Post Data Submitted Successfully!";
+}, function (response) {
+$scope.msg = "Service not Exists";
+$scope.statusval = response.status;
+$scope.statustext = response.statusText;
+$scope.headers = response.headers();
+});
+};
+});
+</script>
+</head>
+<body>
+<div ng-app="postserviceApp" ng-controller="postserviceCtrl">
+<form>
+        <label>Name:
+    <input type="text" name="input" ng-model="name">
+  </label>
+<label>Location:
+    <input type="text" name="input" ng-model="location">
+</label>
+<label>Designation:
+<input type="text" name="input" ng-model="designation">
+</label>
+<a class="button-small blue rounded3" href="#" ng-click="postdata(name,location,designation)">Submit
+</a>
+</form>
+<p>Output Message : {{msg}}</p>
+<p>StatusCode: {{statusval}}</p>
+<p>Status: {{statustext}}</p>
+<p>Response Headers: {{headers}}</p>
+</div>
+</body>
+</html>
+
